@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MyManagedWidgetDemo (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "MyManagedWidgetDemo (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
