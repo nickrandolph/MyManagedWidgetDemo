@@ -39,6 +39,17 @@ internal static class NativeMethods
     [return: MarshalAs(UnmanagedType.U4)]
     public static extern int GetCurrentProcessId();
 
+    [DllImport("ole32.dll")]
+    public static extern int CoWaitForMultipleObjects(
+    CWMO_FLAGS dwFlags, uint dwTimeout,
+int cHandles, IntPtr[] pHandles, out uint lpdwindex);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern IntPtr CreateEvent(IntPtr eventAttributes,
+[MarshalAs(UnmanagedType.Bool)] bool manualReset,
+[MarshalAs(UnmanagedType.Bool)] bool initialState,
+IntPtr name);
+
     /// <summary>
     /// The GetMessage function retrieves a message from the calling thread's 
     /// message queue. The function dispatches incoming sent messages until a 
@@ -292,6 +303,14 @@ internal static class NativeMethods
         ACTIVATE_32_BIT_SERVER = 0x40000,
         ACTIVATE_64_BIT_SERVER = 0x80000
     }
+
+    [Flags]
+    public enum CWMO_FLAGS : int
+    {
+        CWMO_DEFAULT = 0,
+        CWMO_DISPATCH_CALLS = 1,
+        CWMO_DISPATCH_WINDOW_MESSAGES = 2
+    };
 
     /// <summary>
     /// The REGCLS enumeration defines values used in CoRegisterClassObject to 

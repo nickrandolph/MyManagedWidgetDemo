@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using WinRT;
 
 namespace COMHelpers;
 
 /// <summary>
 /// Class factory for the class SimpleObject.
 /// </summary>
-internal class SimpleObjectClassFactory : IClassFactory
+internal class SimpleObjectClassFactory<TInterface, TImplementation> : IClassFactory
+    where TImplementation:TInterface, new()
 {
     public int CreateInstance(IntPtr pUnkOuter, ref Guid riid, 
         out IntPtr ppvObject)
@@ -20,13 +22,14 @@ internal class SimpleObjectClassFactory : IClassFactory
             Marshal.ThrowExceptionForHR(NativeMethods.CLASS_E_NOAGGREGATION);
         }
 
-        if (riid == HelperMethods.GetGuidFromType(typeof(SimpleObject)) ||
+        if (riid == HelperMethods.GetGuidFromType(typeof(TImplementation)) ||
             riid == new Guid(NativeMethods.IID_IDispatch) ||
             riid == new Guid(NativeMethods.IID_IUnknown))
         {
             // Create the instance of the .NET object
-            ppvObject = Marshal.GetComInterfaceForObject(
-                new SimpleObject(), typeof(ISimpleObject));
+            //ppvObject = Marshal.GetComInterfaceForObject(
+            //    new SimpleObject(), typeof(ISimpleObject));
+            ppvObject = MarshalInspectable<TInterface>.FromManaged(new TImplementation());
         }
         else
         {

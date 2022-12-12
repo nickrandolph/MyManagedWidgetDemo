@@ -10,7 +10,13 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+	  <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="ProviderAssets\Counting_Icon.png" />
+    <None Remove="ProviderAssets\Counting_Screenshot.png" />
+    <None Remove="Templates\BackwardCountingWidgetTemplate.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -20,6 +26,9 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="ProviderAssets\Counting_Icon.png" />
+    <Content Include="ProviderAssets\Counting_Screenshot.png" />
+    <Content Include="Templates\BackwardCountingWidgetTemplate.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +46,7 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\COMHelpers\COMHelpers.csproj" />
     <ProjectReference Include="..\WidgetHelpers\WidgetHelpers.csproj" />
   </ItemGroup>
 

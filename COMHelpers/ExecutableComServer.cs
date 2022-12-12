@@ -28,16 +28,18 @@ WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
 
 using System;
 using System.Threading;
+using static COMHelpers.NativeMethods;
 
 namespace COMHelpers;
 
-internal sealed class ExecutableComServer
+public sealed class ExecutableComServer<TInterface, TImplementation>
+    where TImplementation:TInterface, new()
 {
     private ExecutableComServer() { }
 
-    private static ExecutableComServer _instance = new ExecutableComServer();
+    private static ExecutableComServer<TInterface, TImplementation> _instance = new ExecutableComServer<TInterface, TImplementation>();
 
-    public static ExecutableComServer Instance
+    public static ExecutableComServer<TInterface, TImplementation> Instance
     {
         get { return _instance; }
     }
@@ -81,14 +83,14 @@ internal sealed class ExecutableComServer
         //
         // Register the COM class factories.
         // 
-        Guid clsidSimpleObj = HelperMethods.GetGuidFromType(typeof(SimpleObject));
+        Guid clsidSimpleObj = HelperMethods.GetGuidFromType(typeof(TImplementation));
 
         // Register the SimpleObject class object
         int hResult = NativeMethods.CoRegisterClassObject(
             ref clsidSimpleObj,                 // CLSID to be registered
-            new SimpleObjectClassFactory(),     // Class factory
+            new SimpleObjectClassFactory<TInterface, TImplementation>(),     // Class factory
             NativeMethods.CLSCTX.LOCAL_SERVER,  // Context to run
-            NativeMethods.REGCLS.MULTIPLEUSE | NativeMethods.REGCLS.SUSPENDED,
+            NativeMethods.REGCLS.MULTIPLEUSE,// | NativeMethods.REGCLS.SUSPENDED,
             out _cookieSimpleObj);
 
         if (hResult != 0)
@@ -102,7 +104,14 @@ internal sealed class ExecutableComServer
 
         // Inform the SCM about all the registered classes, and begins 
         // letting activation requests into the server process.
-        hResult = NativeMethods.CoResumeClassObjects();
+        //hResult = NativeMethods.CoResumeClassObjects();
+
+        IntPtr evt = NativeMethods.CreateEvent(IntPtr.Zero, true, true, IntPtr.Zero);
+
+        hResult = NativeMethods.CoWaitForMultipleObjects(
+            CWMO_FLAGS.CWMO_DISPATCH_CALLS | CWMO_FLAGS.CWMO_DISPATCH_WINDOW_MESSAGES,
+            0xFFFFFFFF, 1, new IntPtr[] { evt }, out uint index
+            );
 
         if (hResult != 0)
         {

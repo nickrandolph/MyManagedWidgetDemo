@@ -31,8 +31,8 @@ public abstract class WidgetBase : IWidget
         IsActivated = false;
     }
 
-    public abstract void OnActionInvoked(WidgetActionInvokedArgs actionInvokedArgs);
-    public abstract void OnWidgetContextChanged(WidgetContextChangedArgs contextChangedArgs);
+    public virtual void OnActionInvoked(WidgetActionInvokedArgs actionInvokedArgs) { }
+    public virtual void OnWidgetContextChanged(WidgetContextChangedArgs contextChangedArgs) { }
     public abstract string GetTemplateForWidget();
     public abstract string GetDataForWidget();
 

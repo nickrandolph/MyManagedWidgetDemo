@@ -7,6 +7,8 @@ namespace COMHelpers;
 
 internal static class HelperMethods
 {
+
+
     public static Guid GetGuidFromType(Type t)
     {
         if (t == null)

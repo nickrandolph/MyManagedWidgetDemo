@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Package
-  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
-  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+	xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+	xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+	xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+	xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+	xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+	IgnorableNamespaces="uap uap3 rescap">
 
   <Identity
     Name="53480a44-1691-4ed8-989e-864eb356cf1b"
@@ -39,6 +41,64 @@
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
+		<Extensions>
+			<uap:Extension Category="windows.protocol">
+				<uap:Protocol Name="abc">
+					<uap:Logo>Images\StoreLogo.png</uap:Logo>
+					<uap:DisplayName>abc protocol</uap:DisplayName>
+				</uap:Protocol>
+			</uap:Extension>
+			<com:Extension Category="windows.comServer">
+				<com:ComServer>
+					<com:ExeServer Executable="MyManagedWidgetDemo.exe" Arguments="-RegisterProcessAsComServer" DisplayName="MyManagedWidgetDemo">
+						<com:Class Id="B346D60C-42FC-4D9F-AB57-DC263E64F243" DisplayName="MyWidgetProvider" />
+					</com:ExeServer>
+				</com:ComServer>
+			</com:Extension>
+			<uap3:Extension Category="windows.appExtension">
+				<uap3:AppExtension Name="com.microsoft.windows.widgets" DisplayName="MyManagedWidget" Id="MyManagedWidget" PublicFolder="Public">
+					<uap3:Properties>
+						<WidgetProvider>
+							<ProviderIcons>
+								<Icon Path="Images\StoreLogo.png" />
+							</ProviderIcons>
+							<Activation>
+								<CreateInstance ClassId="B346D60C-42FC-4D9F-AB57-DC263E64F243" />
+							</Activation>
+							<Definitions>
+								<Definition Id="BackwardCounting"
+									DisplayName="Sample Backward Counting Widget"
+									Description="Backward Widget Description">
+									<Capabilities>
+										<Capability>
+											<Size Name="small" />
+										</Capability>
+										<Capability>
+											<Size Name="medium" />
+										</Capability>
+										<Capability>
+											<Size Name="large" />
+										</Capability>
+									</Capabilities>
+									<ThemeResources>
+										<Icons>
+											<Icon Path="ProviderAssets\Counting_Icon.png" />
+										</Icons>
+										<Screenshots>
+											<Screenshot Path="ProviderAssets\Counting_Screenshot.png" DisplayAltText="For accessibility" />
+										</Screenshots>
+										<!-- DarkMode and LightMode are optional -->
+										<DarkMode />
+										<LightMode />
+									</ThemeResources>
+								</Definition>
+
+							</Definitions>
+						</WidgetProvider>
+					</uap3:Properties>
+				</uap3:AppExtension>
+			</uap3:Extension>
+		</Extensions>
     </Application>
   </Applications>
 

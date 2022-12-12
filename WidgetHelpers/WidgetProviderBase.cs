@@ -5,7 +5,7 @@ using Microsoft.Windows.Widgets.Providers;
 
 namespace WidgetsHelpers;
 
-public class WidgetProviderBase
+public class WidgetProviderBase:IWidgetProvider
 {
     private record WidgetCreationInfo
     (
@@ -81,7 +81,7 @@ public class WidgetProviderBase
     // you don't need to provide new content for the given WidgetId
     // since the user has unpinned the widget or it was deleted by the Host
     // for any other reason.
-    public void DeleteWidget(string widgetId)
+    public void DeleteWidget(string widgetId, string customState)
     {
         _runningWidgets.Remove(widgetId);
     }
