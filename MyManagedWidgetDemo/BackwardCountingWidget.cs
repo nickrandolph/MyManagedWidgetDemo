@@ -71,5 +71,4 @@ internal class BackwardCountingWidget : WidgetBase
     {
         return "{ \"count\": " + State + " }";
     }
-
 }

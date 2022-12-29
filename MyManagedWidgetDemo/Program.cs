@@ -17,7 +17,7 @@ public class Program
 
         if (args?.Any(x => x.Contains("RegisterProcessAsComServer")) ?? false)
         {
-            ExecutableComServer<IWidgetProvider, WidgetProvider>.Instance.Run();
+            ComServer<IWidgetProvider, WidgetProvider>.Instance.Run();
         }
         else
         {

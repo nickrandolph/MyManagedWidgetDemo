@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace COMHelpers;
 
@@ -18,19 +17,19 @@ internal interface IClassFactory
     /// <summary>
     /// Creates an uninitialized object.
     /// </summary>
-    /// <param name="pUnkOuter"></param>
-    /// <param name="riid">
+    /// <param name="outer"></param>
+    /// <param name="iid">
     /// Reference to the identifier of the interface to be used to 
     /// communicate with the newly created object. If pUnkOuter is NULL, this
     /// parameter is frequently the IID of the initializing interface.
     /// </param>
-    /// <param name="ppvObject">
+    /// <param name="result">
     /// Address of pointer variable that receives the interface pointer 
     /// requested in riid. 
     /// </param>
     /// <returns>S_OK means success.</returns>
     [PreserveSig]
-    int CreateInstance(IntPtr pUnkOuter, ref Guid riid, out IntPtr ppvObject);
+    int CreateInstance(IntPtr outer, ref Guid iid, out IntPtr result);
 
     /// <summary>
     /// Locks object application open in memory.
